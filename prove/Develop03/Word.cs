@@ -19,7 +19,7 @@ public class Word
     {
         if (isBlank)
         {
-            return new string('_', wordLen); // Return underscores if the word is blanked
+            return new string('_', wordLen);
         }
         return word;
     }

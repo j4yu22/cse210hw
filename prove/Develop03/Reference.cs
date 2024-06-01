@@ -12,19 +12,17 @@ public class Reference
 
     public Reference(string book, string chapter, int verse, string verseText)
     {
-        this.fileAddress = verseText; // Repurposed for the verse text
+        this.fileAddress = verseText;
         scriptures = new List<Verse>();
         scriptures.Add(new Verse(verseText));
         this.scriptureReferences = $"{book} {chapter}:{verse}";
     }
 
-    // Get the reference string
     public string GetReferenceString()
     {
         return scriptureReferences;
     }
 
-    // Print scripture method
     public void PrintScripture()
     {
         foreach (var verse in scriptures)
@@ -33,7 +31,6 @@ public class Reference
         }
     }
 
-    // Blank out words in the verses
     public void BlankWords(int minWords, int maxWords)
     {
         Random random = new Random();
