@@ -1,6 +1,3 @@
-//reference can take the words list as empty because each instance of reference needs the list<words>
-//look into an override here too for looping through printing the words
-
 using System;
 using System.Collections.Generic;
 
@@ -8,14 +5,23 @@ public class Reference
 {
     private List<Verse> scriptures;
     private string scriptureReferences;
-    private string fileAddress;
 
-    public Reference(string book, string chapter, int verse, string verseText)
+    // Constructor that accepts either a single verse string or multiple verse strings
+    public Reference(string book, string chapter, int startVerse, int endVerse, params string[] verses)
     {
-        this.fileAddress = verseText;
         scriptures = new List<Verse>();
-        scriptures.Add(new Verse(verseText));
-        this.scriptureReferences = $"{book} {chapter}:{verse}";
+        for (int i = 0; i < verses.Length; i++)
+        {
+            scriptures.Add(new Verse(verses[i]));
+        }
+        if (startVerse == endVerse)
+        {
+            this.scriptureReferences = $"{book} {chapter}:{startVerse}";
+        }
+        else
+        {
+            this.scriptureReferences = $"{book} {chapter}:{startVerse}-{endVerse}";
+        }
     }
 
     public string GetReferenceString()

@@ -34,7 +34,7 @@ public class Verse
     {
         Random random = new Random();
         int blankedWords = 0;
-        while (blankedWords < wordsToBlank)
+        while (blankedWords < wordsToBlank && words.Exists(w => !w.CheckBlank()))
         {
             int index = random.Next(words.Count);
             if (!words[index].CheckBlank())
