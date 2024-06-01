@@ -8,7 +8,6 @@ public class Word
     private bool isBlank;
     private int wordLen;
 
-    // Constructor
     public Word(string word)
     {
         this.word = word;
@@ -16,21 +15,27 @@ public class Word
         this.wordLen = word.Length;
     }
 
-    // Get the word
     public string GetWord()
     {
+        if (isBlank)
+        {
+            return new string('_', wordLen); // Return underscores if the word is blanked
+        }
         return word;
     }
 
-    // Blank the word
     public void Blank()
     {
         isBlank = true;
     }
 
-    // Check if the word is blank
     public bool CheckBlank()
     {
         return isBlank;
+    }
+
+    public override string ToString()
+    {
+        return GetWord();
     }
 }

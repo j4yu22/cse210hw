@@ -10,20 +10,18 @@ public class Reference
     private string scriptureReferences;
     private string fileAddress;
 
-    // Constructor with multiple parameters
-    public Reference(string book, string chapter, int startVerse, int endVerse, string fileAddress)
+    public Reference(string book, string chapter, int verse, string verseText)
     {
-        // Initialization logic here
-        this.fileAddress = fileAddress;
+        this.fileAddress = verseText; // Repurposed for the verse text
         scriptures = new List<Verse>();
+        scriptures.Add(new Verse(verseText));
+        this.scriptureReferences = $"{book} {chapter}:{verse}";
     }
 
-    // Constructor with fewer parameters
-    public Reference(string book, string chapter, int verse, string fileAddress)
+    // Get the reference string
+    public string GetReferenceString()
     {
-        // Initialization logic here
-        this.fileAddress = fileAddress;
-        scriptures = new List<Verse>();
+        return scriptureReferences;
     }
 
     // Print scripture method
@@ -35,10 +33,14 @@ public class Reference
         }
     }
 
-    // Find verses method
-    public void FindVerses(string book, int startVerse, int endVerse, string fileAddress)
+    // Blank out words in the verses
+    public void BlankWords(int minWords, int maxWords)
     {
-        // Implementation to find verses
-        // This method might load and parse the file and add verses to scriptures list
+        Random random = new Random();
+        foreach (var verse in scriptures)
+        {
+            int wordsToBlank = random.Next(minWords, maxWords + 1);
+            verse.BlankRandomWords(wordsToBlank);
+        }
     }
 }
