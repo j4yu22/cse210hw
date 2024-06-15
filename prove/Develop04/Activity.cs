@@ -1,11 +1,66 @@
 using System;
-using System.Runtime;
+using System.Diagnostics;
+using System.Threading;
 
-class Activity{
-    static int GetTime() {
-        while (true) {
-        Console.Write("How many seconds would you like to do this activity for? ");
-        string input = Console.ReadLine();
+public abstract class Activity
+{
+    protected int time;
+    protected string message;
+
+    public void StartActivity()
+    {
+        Console.Clear();
+        this.Load(4);
+        Console.Clear();
+        PrintDescription();
+        time = GetDuration();
+        Console.WriteLine("Get ready to begin...");
+        Load(3);
+
+        RunActivity();
+
+        CongratulateUser();
+    }
+
+    protected abstract void PrintDescription();
+    protected abstract void RunActivity();
+
+    protected void DelayAnimation(int seconds)
+    {
+        for (int i = 0; i < seconds; i++)
+        {
+            Console.Write(".");
+            Thread.Sleep(1000);
+        }
+        Console.WriteLine();
+    }
+
+    protected void CongratulateUser()
+    {
+        Console.Clear();
+        Console.WriteLine("Well done! You've completed the activity.");
+        Console.WriteLine($"Activity duration: {time} seconds");
+        DelayAnimation(3);
+    }
+
+    protected void TrackTime(Action activityAction)
+    {
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
+        while (stopwatch.Elapsed.TotalSeconds < time)
+        {
+            activityAction();
+        }
+        stopwatch.Stop();
+    }
+
+    protected int GetDuration()
+    {
+        while (true)
+        {
+            Console.Write("How many seconds would you like to do this activity for? ");
+            string input = Console.ReadLine();
+
             try
             {
                 int duration = int.Parse(input);
@@ -24,10 +79,8 @@ class Activity{
             }
         }
     }
-    static void Run() {
-        Console.WriteLine("Running...");
-    }
-   public static void Load(int seconds)
+
+    protected void Load(int seconds)
     {
         char[] spinner = { '|', '/', '-', '\\' };
         int spinnerLength = spinner.Length;
@@ -39,8 +92,5 @@ class Activity{
             Thread.Sleep(100);
             Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
         }
-    }
-    static void Congratulate() {
-        Console.WriteLine("Congratulations on finishing your activity!");
     }
 }
