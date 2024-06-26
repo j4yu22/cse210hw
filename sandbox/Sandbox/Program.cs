@@ -1,29 +1,28 @@
 using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-using System.Security.Cryptography;
 
 class Program
 {
     static void Main(string[] args)
     {
-        Bank bank = new Bank();
+        int quit = 0;
+        while(quit == 0) {
+            Console.Clear();
+            Console.WriteLine("Sandbox Menu");
+            Console.WriteLine("1. ICE Smart Home");
+            Console.WriteLine("2. Test");
+            Console.WriteLine("3. Quit");
+            Console.Write("Please input the number of the option that you would like to select: ");
+            string userInput = Console.ReadLine();
 
-        Console.WriteLine($"You have ${bank.GetAccountBalance()}.");
-        bank.Withdraw();
-        Console.WriteLine($"You have ${bank.GetAccountBalance()}.");
-        // for(int i = 0; i < 4; i++)
-        // {
-        //     int number = GetRandomNumber(1, 11);
-        //     Console.WriteLine(number);
-        // }
-
+            if(userInput == "1") {
+                ICESmartHome.SmartHome();
+            }
+            else if(userInput == "2") {
+                Test.RunTimeTest();
+            }
+            else if(userInput == "3") {
+                quit = 1;
+            }
+        }
     }
-
-    // static int GetRandomNumber(int min, int max)
-    // {
-    //     Random rand = new Random();
-    //     return rand.Next(min, max);
-    // }
 }

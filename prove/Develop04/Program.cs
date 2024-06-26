@@ -2,36 +2,43 @@ using System;
 
 class Program
 {
-    static void Main()
+    static void Main(string[] args)
     {
-        menu();
+        Menu();
     }
-    static void menu() {
-        while (true) {
+
+    static void Menu()
+    {
+        while (true)
+        {
+            Console.Clear();
             Console.WriteLine("1. BreathingActivity");
             Console.WriteLine("2. ListingActivity");
-            Console.WriteLine("3. ReflectActivity");
+            Console.WriteLine("3. ReflectionActivity");
             Console.WriteLine("4. Exit");
             Console.Write("Choose: ");
-            int choice = int.Parse(Console.ReadLine());
-            switch (choice) {
+            int choice;
+            if (!int.TryParse(Console.ReadLine(), out choice))
+            {
+                Console.WriteLine("Invalid input. Please enter a number.");
+                continue;
+            }
+
+            switch (choice)
+            {
                 case 1:
                     BreathingActivity breathingActivity = new BreathingActivity();
-                    breathingActivity.Run();
-                    Console.WriteLine($"You chose option {choice}.");
+                    breathingActivity.StartActivity();
                     break;
                 case 2:
                     ListingActivity listingActivity = new ListingActivity();
-                    listingActivity.Run();
-                    Console.WriteLine($"You chose option {choice}.");
+                    listingActivity.StartActivity();
                     break;
                 case 3:
-                    ReflectActivity reflectionActivity = new ReflectActivity();
-                    reflectionActivity.Run();
-                    Console.WriteLine($"You chose option {choice}.");
+                    ReflectionActivity reflectionActivity = new ReflectionActivity();
+                    reflectionActivity.StartActivity();
                     break;
                 case 4:
-                    Console.WriteLine($"You chose option {choice}.");
                     return;
                 default:
                     Console.WriteLine("Invalid choice");
