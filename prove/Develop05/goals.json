@@ -1,0 +1,24 @@
+{
+  "score": 50,
+  "goals": [
+    {
+      "$type": "SimpleGoal, Develop05",
+      "points": 1000,
+      "name": "Run a marathon"
+    },
+    {
+      "$type": "EternalGoal, Develop05",
+      "timesCompleted": 0,
+      "points": 100,
+      "name": "Read scriptures"
+    },
+    {
+      "$type": "ChecklistGoal, Develop05",
+      "timesCompleted": 1,
+      "points": 50,
+      "name": "Attend the temple",
+      "NCompletionsGoal": 10,
+      "BonusPoints": 500
+    }
+  ]
+}
