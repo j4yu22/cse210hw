@@ -1,44 +1,46 @@
 using System;
+using System.Drawing;
 
-public class Paddle
+namespace BrickBreakerGame
 {
-    private int x;
-    private int y;
-    private int width;
-    private int height;
-    private int speed;
-
-    public Paddle(int x, int y)
+    public class Paddle
     {
-        this.x = x;
-        this.y = y;
-        this.width = 20; // Adjust width to fit console better
-        this.height = 1; // Adjust height to fit console better
-        this.speed = 10;
-    }
+        public int X { get; private set; }
+        public int Y { get; private set; }
+        public int Width { get; private set; }
+        public int Height { get; private set; }
+        public bool MoveLeft { get; set; }
+        public bool MoveRight { get; set; }
+        public int Velocity { get; private set; }
 
-    public void Update()
-    {
-        // Update paddle position based on user input
-    }
+        // increased paddle speed, orinally 15
+        public Paddle(int x, int y, int width = 250, int height = 15, int velocity = 30)
+        {
+            X = x;
+            Y = y;
+            Width = width;
+            Height = height;
+            Velocity = velocity;
+        }
 
-    public void Render()
-    {
-        // Ensure x and y are within console bounds
-        x = Math.Max(0, Math.Min(Console.WindowWidth - width, x));
-        y = Math.Max(0, Math.Min(Console.WindowHeight - height, y));
+        public void Update(Size clientSize, int speed)
+        {
 
-        Console.SetCursorPosition(x, y);
-        Console.Write(new string('=', width));
-    }
-    public void MoveLeft()
-    {
-        x -= speed;
-    }
+            if (MoveLeft && X > 0)
+            {
+                X -= speed;
+            }
+            if (MoveRight && X + Width < clientSize.Width)
+            {
+                X += speed;
+            }
+        }
 
-    public void MoveRight()
-    {
-        x += speed;
+        public void Render(Graphics g)
+        {
+            Brush lightBlueBrush = new SolidBrush(Color.FromArgb(45, 46, 45));
+            g.FillRectangle(lightBlueBrush, X, Y, Width, Height);
+            g.DrawRectangle(Pens.Black, X, Y, Width, Height);
+        }
     }
-
 }

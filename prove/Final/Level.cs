@@ -1,26 +1,66 @@
-using System;
 using System.Collections.Generic;
+using System.Drawing;
 
-public class Level
+namespace BrickBreakerGame
 {
-    private List<Brick> bricks;
-
-    public Level()
+    public class Level
     {
-        bricks = new List<Brick>();
-        // Initialize bricks
-    }
+        public List<Brick> Bricks { get; private set; }
 
-    public void CheckCollisions(Ball ball)
-    {
-        // Check for collisions between the ball and bricks
-    }
-
-    public void Render()
-    {
-        foreach (var brick in bricks)
+        public Level(int rows, int cols, int formWidth, int formHeight)
         {
-            brick.Render();
+            Bricks = new List<Brick>();
+            GenerateLevel(rows, cols, formWidth, formHeight);
+        }
+
+        private void GenerateLevel(int rows, int cols, int formWidth, int formHeight)
+        {
+            int brickWidth = formWidth / cols;
+            int brickHeight = (formHeight / 2) / rows;
+
+            int[,] levelLayout = new int[,]
+            {
+                { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 },
+                { 3, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 3 },
+                { 3, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 3 },
+                { 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3 },
+                { 3, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 3 },
+                { 3, 1, 1, 1, 1, 1, 2, 1, 3, 2, 2, 2, 2, 3, 1, 2, 1, 1, 1, 1, 1, 3 },
+                { 3, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 3 },
+                { 3, 2, 2, 2, 2, 1, 1, 1, 3, 1, 1, 1, 1, 3, 1, 1, 1, 2, 2, 2, 2, 3 },
+                { 3, 1, 1, 1, 1, 3, 3, 3, 3, 1, 1, 1, 1, 3, 3, 3, 3, 1, 1, 1, 1, 3 },
+                { 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3 },
+                { 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3 },
+                { 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3 }
+            };
+
+            for (int row = 0; row < rows; row++)
+            {
+                for (int col = 0; col < cols; col++)
+                {
+                    int brickType = levelLayout[row, col];
+                    if (brickType == 1)
+                    {
+                        Bricks.Add(new NormalBrick(col * brickWidth, row * brickHeight, brickWidth, brickHeight));
+                    }
+                    else if (brickType == 2)
+                    {
+                        Bricks.Add(new StrongBrick(col * brickWidth, row * brickHeight, brickWidth, brickHeight));
+                    }
+                    else if (brickType == 3)
+                    {
+                        Bricks.Add(new UnbreakableBrick(col * brickWidth, row * brickHeight, brickWidth, brickHeight));
+                    }
+                }
+            }
+        }
+
+        public void Draw(Graphics g)
+        {
+            foreach (Brick brick in Bricks)
+            {
+                brick.Render(g);
+            }
         }
     }
 }

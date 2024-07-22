@@ -1,37 +1,25 @@
-using System;
+using System.Drawing;
 
-public class Brick
+namespace BrickBreakerGame
 {
-    private int x;
-    private int y;
-    private int width;
-    private int height;
-    private bool isDestroyed;
-
-    public Brick(int x, int y)
+    public abstract class Brick
     {
-        this.x = x;
-        this.y = y;
-        this.width = 10; // Adjust width to fit console better
-        this.height = 1; // Adjust height to fit console better
-        this.isDestroyed = false;
-    }
+        public int X { get; set; }
+        public int Y { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
+        public bool IsBroken { get; protected set; }
 
-    public void HandleHit(Ball ball)
-    {
-        // Handle the ball hitting the brick
-    }
-
-    public void Render()
-    {
-        if (!isDestroyed)
+        protected Brick(int x, int y, int width, int height)
         {
-            // Ensure x and y are within console bounds
-            x = Math.Max(0, Math.Min(Console.WindowWidth - width, x));
-            y = Math.Max(0, Math.Min(Console.WindowHeight - height, y));
-
-            Console.SetCursorPosition(x, y);
-            Console.Write(new string('#', width));
+            X = x;
+            Y = y;
+            Width = width;
+            Height = height;
+            IsBroken = false;
         }
+
+        public abstract void Hit();
+        public abstract void Render(Graphics g);
     }
 }

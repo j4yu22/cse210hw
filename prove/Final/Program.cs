@@ -1,8 +1,16 @@
-class Program
+using System;
+using System.Windows.Forms;
+
+namespace BrickBreakerGame
 {
-    static void Main(string[] args)
+    public class Program
     {
-        Game game = new Game();
-        game.Start();
+        [STAThread]
+        public static void Main()
+        {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new GameForm());
+        }
     }
 }

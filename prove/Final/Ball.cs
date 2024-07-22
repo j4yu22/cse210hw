@@ -1,40 +1,84 @@
 using System;
+using System.Drawing;
+using System.Collections.Generic;
 
-public class Ball
+namespace BrickBreakerGame
 {
-    private int x;
-    private int y;
-    private int speedX;
-    private int speedY;
-    private int radius;
-
-    public Ball(int x, int y)
+    public class Ball
     {
-        this.x = x;
-        this.y = y;
-        this.speedX = 1; // Adjust speed for smoother movement
-        this.speedY = 1; // Adjust speed for smoother movement
-        this.radius = 1;
-    }
+        private float x;
+        private float y;
+        private float velocityX;
+        private float velocityY;
+        private readonly float radius = 10;
 
-    public void Update()
-    {
-        // Update ball position
-        x += speedX;
-        y += speedY;
+        public event Action BallHitBottom;
 
-        // Ensure ball stays within console bounds
-        if (x < 0 || x >= Console.WindowWidth) speedX = -speedX;
-        if (y < 0 || y >= Console.WindowHeight) speedY = -speedY;
-    }
+        public Ball(float x, float y)
+        {
+            this.x = x;
+            this.y = y;
+            velocityX = 5;
+            velocityY = 5;
+        }
 
-    public void Render()
-    {
-        // Ensure x and y are within console bounds
-        x = Math.Max(0, Math.Min(Console.WindowWidth - 1, x));
-        y = Math.Max(0, Math.Min(Console.WindowHeight - 1, y));
+        public void Update(Size clientSize)
+        {
+            x += velocityX;
+            y += velocityY;
 
-        Console.SetCursorPosition(x, y);
-        Console.Write('O');
+            // Ball collision with the walls
+            if (x < 0 || x > clientSize.Width - radius * 2)
+            {
+                velocityX = -velocityX;
+            }
+            if (y < 0)
+            {
+                velocityY = -velocityY;
+            }
+            if (y > clientSize.Height)
+            {
+                BallHitBottom?.Invoke();
+            }
+        }
+
+        public void Render(Graphics g)
+        {
+            g.FillEllipse(Brushes.White, x, y, radius * 2, radius * 2);
+        }
+
+        public void CheckCollision(Paddle paddle, List<Brick> bricks, float paddleVelocity)
+        {
+            if (x + radius > paddle.X && x - radius < paddle.X + paddle.Width && y + radius > paddle.Y && y - radius < paddle.Y + paddle.Height)
+            {
+
+                y = paddle.Y - radius * 2;
+                velocityY = -Math.Abs(velocityY);
+
+            }
+
+            foreach (var brick in bricks)
+            {
+                if (!brick.IsBroken && x + radius > brick.X && x - radius < brick.X + brick.Width && y + radius > brick.Y && y - radius < brick.Y + brick.Height)
+                {
+                    bool hitFromLeft = x + radius > brick.X && x < brick.X;
+                    bool hitFromRight = x - radius < brick.X + brick.Width && x > brick.X + brick.Width;
+                    bool hitFromTop = y + radius > brick.Y && y < brick.Y;
+                    bool hitFromBottom = y - radius < brick.Y + brick.Height && y > brick.Y + brick.Height;
+
+                    if (hitFromLeft || hitFromRight)
+                    {
+                        velocityX = -velocityX;
+                    }
+                    if (hitFromTop || hitFromBottom)
+                    {
+                        velocityY = -velocityY;
+                    }
+
+                    brick.Hit();
+                    break;
+                }
+            }
+        }
     }
 }
